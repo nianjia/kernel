@@ -1,8 +1,6 @@
 #![feature(lang_items)]
 #![feature(asm)]
 #![feature(const_fn)]
-#![feature(const_unique_new)]
-#![feature(unique)]
 #![feature(alloc)]
 #![feature(ptr_internals)]
 #![no_std]

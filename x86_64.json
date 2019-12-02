@@ -9,7 +9,9 @@
   "features": "-mmx,-sse,+soft-float",
   "os": "tifflin",
   "arch": "x86_64",
-  "pre-link-args": ["-m64"],
+  "pre-link-args": {
+    "gcc": ["-m64"]
+  },
   "no-compiler-rt": true,
   "disable-redzone": true,
   "eliminate-frame-pointer": false,

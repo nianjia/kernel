@@ -1,12 +1,17 @@
+use core::panic::PanicInfo;
 
-#[lang="panic_fmt"]
+#[lang = "panic_impl"]
 #[no_mangle]
-pub extern "C" fn rust_begin_unwind(args: ::core::fmt::Arguments, file: &str, line: usize) -> !
-{
-    // 'args' will print to the formatted string passed to panic!
-    use core::fmt::Write;
-    system_print!("file='{}', line={} :: {}", file, line, args);
-    loop {}
+pub extern "C" fn rust_begin_unwind(info: &PanicInfo) -> ! {
+	use core::fmt::Write;
+	if let Some(location) = info.location() {
+        system_print!("panic occurred in file '{}' at line {}", location.file(), location.line());
+    } else {
+        system_print!("panic occurred but can't get location information...");
+    }
+	// 'args' will print to the formatted string passed to panic!
+	// log!("file='{}', line={} column={}", file, line, args);
+	loop {}
 }
 
 #[allow(non_camel_case_types)]

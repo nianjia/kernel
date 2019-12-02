@@ -1,3 +1,5 @@
+ARCH := x86_64
+
 kernel := kernel/build/$(ARCH)/libkernel.bin
 rinit := rinit/build/$(ARCH)/librinit.bin
 

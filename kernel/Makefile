@@ -1,4 +1,6 @@
 version ?= debug
+ARCH := x86_64
+TARGET_SPEC := ../x86_64.json
 kernel := build/$(ARCH)/libkernel.bin
 rust_os := target/$(ARCH)/$(version)/libkernel.a
 
@@ -21,14 +23,14 @@ clean:
 	@rm -r target
 
 build: cargo $(rust_os) $(assembly_object_files) $(linker_script)
-	@$(LD) $(linker_flags) -o $(kernel).elf64 $(assembly_object_files) $(rust_os)
-	@$(OBJCOPY) $(kernel).elf64 -F elf32-i386 $(kernel)
+	@ld $(linker_flags) -o $(kernel).elf64 $(assembly_object_files) $(rust_os)
+	@objcopy $(kernel).elf64 -F elf32-i386 $(kernel)
 
 cargo:
 ifeq ($(version),release)
-	@RUSTFLAGS="-L $(LIBCORE) -L $(LIBCOMPILER_BUILTINS)" cargo rustc --release --target $(TARGET_SPEC)
+	@cargo xbuild --release --target $(TARGET_SPEC)
 else
-	@RUSTFLAGS="-L $(LIBCORE) -L $(LIBCOMPILER_BUILTINS)" cargo rustc --target $(TARGET_SPEC)
+	@cargo xbuild --target $(TARGET_SPEC)
 endif
 
 # compile assembly files

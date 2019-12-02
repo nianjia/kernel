@@ -1,8 +1,6 @@
 #![feature(lang_items)]
 #![feature(asm)]
 #![feature(const_fn)]
-#![feature(const_unsafe_cell_new)]
-#![feature(unique)]
 #![feature(naked_functions)]
 #![feature(type_ascription)]
 #![feature(core_intrinsics)]
@@ -11,9 +9,6 @@
 #![feature(nonzero)]
 #![feature(unsize)]
 #![feature(coerce_unsized)]
-#![feature(core_slice_ext)]
-#![feature(reflect_marker)]
-#![feature(core_slice_ext)]
 #![feature(ptr_internals)]
 #![no_std]
 

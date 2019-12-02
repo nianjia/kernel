@@ -3,6 +3,7 @@
 #![feature(alloc)]
 #![feature(allocator_api)]
 #![feature(lang_items)]
+#![feature(alloc_error_handler)]
 #![no_std]
 
 #[macro_use]
@@ -86,21 +87,20 @@ impl WatermarkAllocator {
 #[global_allocator]
 static WATER_ALLOCATOR: WaterAlloc = WaterAlloc;
 
-use alloc::allocator::Layout;
-use core::alloc::{GlobalAlloc, Opaque};
+use core::alloc::{GlobalAlloc, Layout};
 
 struct WaterAlloc;
 
 unsafe impl<'a> GlobalAlloc for WaterAlloc {
-    unsafe fn alloc(&self, layout: Layout) -> *mut Opaque {
+    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         ALLOCATOR.wait().unwrap().lock().allocate(layout.size(), layout.align()) as _
     }
 
-    unsafe fn dealloc(&self, _pointer: *mut Opaque, _layout: Layout) { }
+    unsafe fn dealloc(&self, _pointer: *mut u8, _layout: Layout) { }
 }
 
-#[lang="oom"]
+#[alloc_error_handler]
 #[no_mangle]
-pub fn rust_oom() -> ! {
+pub fn rust_oom(_: core::alloc::Layout) -> ! {
     panic!("Out of memory");
 }

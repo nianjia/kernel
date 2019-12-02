@@ -1,9 +1,10 @@
 version ?= debug
+ARCH := x86_64
 
-linker_script := $(USERSPACE_LINKER)
+linker_script := linker.ld
 
 linker_flags := -T $(linker_script)
-linker_flags += -Map build/$(arch)/map.txt
+linker_flags += -Map build/$(ARCH)/map.txt
 linker_flags += --gc-sections
 linker_flags += -z max-page-size=0x1000
 
@@ -20,11 +21,11 @@ rinit := build/$(ARCH)/$(name).bin
 # compile assembly files
 build/$(arch)/%.o: src/arch/$(ARCH)/%.S
 	@mkdir -p $(shell dirname $@)
-	@$(AS) -o $@ $<
+	@as -o $@ $<
 
 build: cargo $(librinit) $(assembly_object_files) $(linker_script)
 	@mkdir -p build/$(ARCH)
-	@$(LD) $(linker_flags) -o $(rinit) $(assembly_object_files) $(librinit)
+	@ld $(linker_flags) -o $(rinit) $(assembly_object_files) $(librinit)
 
 clean:
 	@rm -rf build

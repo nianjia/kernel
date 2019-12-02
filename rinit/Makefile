@@ -1,10 +1,11 @@
 name := librinit
+TARGET_SPEC := ../x86_64.json
 
 include ../userspace.mk
 
 cargo:
 ifeq ($(version),release)
-	@RUSTFLAGS="-L $(LIBCORE) -L $(LIBALLOC) -L $(LIBCOMPILER_BUILTINS)" cargo rustc --release --target $(TARGET_SPEC) --verbose
+	@cargo xbuild --release --target $(TARGET_SPEC) --verbose
 else
-	@RUSTFLAGS="-L $(LIBCORE) -L $(LIBALLOC) -L $(LIBCOMPILER_BUILTINS)" cargo rustc --target $(TARGET_SPEC) --verbose
+	@cargo xbuild --target $(TARGET_SPEC) --verbose
 endif

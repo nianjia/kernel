@@ -1,5 +1,5 @@
-#![feature(const_atomic_usize_new)]
-#![feature(const_unsafe_cell_new)]
+// #![feature(const_atomic_usize_new)]
+// #![feature(const_unsafe_cell_new)]
 
 #![crate_type = "lib"]
 #![warn(missing_docs)]
